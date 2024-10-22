@@ -3,6 +3,9 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom"; // Import useHistory hook
 import { MDBContainer, MDBInput, MDBBtn } from "mdb-react-ui-kit";
 import { Box, TextField, Button, MenuItem } from "@mui/material";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 function SignupPage() {
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
