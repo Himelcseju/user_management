@@ -22,7 +22,12 @@ function LoginPage() {
         email,
         password,
       });
-      console.log("Login successful:", response.data.message);
+
+      const { message, user } = response.data; // Destructure the message and user from the response data
+      console.log(message);
+      console.log("user is" + user);
+      //console.log("Login successful:", response.data.message);
+      //  console.log(`Message: ${message}, User: ${JSON.stringify(user)}`);
       toast.success(response.data.message);
       history("/dashboard");
     } catch (error) {

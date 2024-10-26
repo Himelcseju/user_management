@@ -1,6 +1,7 @@
 import React from "react";
 import {
   AppBar,
+  Badge,
   Box,
   CssBaseline,
   Divider,
@@ -12,6 +13,9 @@ import {
   ListItemText,
   Toolbar,
   Typography,
+  Avatar,
+  Menu,
+  MenuItem,
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import DashboardIcon from "@mui/icons-material/Dashboard";
@@ -19,20 +23,35 @@ import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import BarChartIcon from "@mui/icons-material/BarChart";
 import Brightness4Icon from "@mui/icons-material/Brightness4";
 import Brightness7Icon from "@mui/icons-material/Brightness7";
-import { useThemeToggle } from "./ThemeToggleProvider"; // Import the hook
+import MailIcon from "@mui/icons-material/Mail";
+import NotificationsIcon from "@mui/icons-material/Notifications";
+import { useThemeToggle } from "./ThemeToggleProvider";
+
 const drawerWidth = 240;
 
 function DashboardLayoutBasic() {
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const toggleTheme = useThemeToggle();
   const [darkMode, setDarkMode] = React.useState(false);
+  const [anchorEl, setAnchorEl] = React.useState(null);
+
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
   };
+
   const handleToggle = () => {
     setDarkMode((prevMode) => !prevMode);
     toggleTheme();
   };
+
+  const handleProfileClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleProfileClose = () => {
+    setAnchorEl(null);
+  };
+
   const drawer = (
     <div>
       <Toolbar />
@@ -65,56 +84,90 @@ function DashboardLayoutBasic() {
       >
         <Toolbar>
           <IconButton
-            edge="end"
+            edge="start"
             color="inherit"
-            aria-label="mode"
-            onClick={handleToggle}
-            sx={{ ml: "auto" }}
+            aria-label="open drawer"
+            onClick={handleDrawerToggle}
+            sx={{ mr: 2 }}
           >
-            {darkMode ? <Brightness7Icon /> : <Brightness4Icon />}
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" noWrap component="div">
             Dashboard
           </Typography>
+
+          {/* Align to the right */}
+          <Box sx={{ ml: "auto", display: "flex", alignItems: "center" }}>
+            {/* Theme Toggle */}
+            <IconButton
+              edge="end"
+              color="inherit"
+              aria-label="toggle theme"
+              onClick={handleToggle}
+              sx={{ mr: 2 }}
+            >
+              {darkMode ? <Brightness7Icon /> : <Brightness4Icon />}
+            </IconButton>
+
+            {/* Message and Notification Icons */}
+            <IconButton
+              size="large"
+              aria-label="show 4 new mails"
+              color="inherit"
+            >
+              <Badge badgeContent={4} color="error">
+                <MailIcon />
+              </Badge>
+            </IconButton>
+            <IconButton
+              size="large"
+              aria-label="show 17 new notifications"
+              color="inherit"
+            >
+              <Badge badgeContent={17} color="error">
+                <NotificationsIcon />
+              </Badge>
+            </IconButton>
+
+            {/* Profile Menu */}
+            <IconButton
+              edge="end"
+              color="inherit"
+              aria-label="profile"
+              onClick={handleProfileClick}
+            >
+              <Avatar alt="User Profile" src="/path-to-profile-pic.jpg" />
+            </IconButton>
+            <Menu
+              anchorEl={anchorEl}
+              open={Boolean(anchorEl)}
+              onClose={handleProfileClose}
+            >
+              <MenuItem onClick={handleProfileClose}>Profile</MenuItem>
+              <MenuItem onClick={handleProfileClose}>Settings</MenuItem>
+              <MenuItem onClick={handleProfileClose}>Logout</MenuItem>
+            </Menu>
+          </Box>
         </Toolbar>
       </AppBar>
-      <Box
-        component="nav"
-        sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 } }}
-        aria-label="mailbox folders"
+
+      <Drawer
+        variant="temporary"
+        open={mobileOpen}
+        onClose={handleDrawerToggle}
+        ModalProps={{
+          keepMounted: true, // Better open performance on mobile
+        }}
+        sx={{
+          "& .MuiDrawer-paper": {
+            boxSizing: "border-box",
+            width: drawerWidth,
+          },
+        }}
       >
-        <Drawer
-          variant="temporary"
-          open={mobileOpen}
-          onClose={handleDrawerToggle}
-          ModalProps={{
-            keepMounted: true, // Better open performance on mobile.
-          }}
-          sx={{
-            display: { xs: "block", sm: "none" },
-            "& .MuiDrawer-paper": {
-              boxSizing: "border-box",
-              width: drawerWidth,
-            },
-          }}
-        >
-          {drawer}
-        </Drawer>
-        <Drawer
-          variant="permanent"
-          sx={{
-            display: { xs: "none", sm: "block" },
-            "& .MuiDrawer-paper": {
-              boxSizing: "border-box",
-              width: drawerWidth,
-            },
-          }}
-          open
-        >
-          {drawer}
-        </Drawer>
-      </Box>
+        {drawer}
+      </Drawer>
+
       <Box
         component="main"
         sx={{
