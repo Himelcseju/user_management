@@ -17,19 +17,30 @@ function LoginPage() {
         setError("Please enter both username and password.");
         return;
       }
-      console.log({ email, password }); // Log the values of username and password (username, password);
+      //console.log({ email, password }); // Log the values of username and password (username, password);
       const response = await axios.post("http://localhost:8080/auth/signin", {
         email,
         password,
       });
 
-      const { message, user } = response.data; // Destructure the message and user from the response data
+      const { message, status, user } = response.data; // Destructure the message and user from the response data
       console.log(message);
-      console.log("user is" + user);
+      //console.log("status" + status);
+      // console.log(`user is ${JSON.stringify(user)}`);
       //console.log("Login successful:", response.data.message);
       //  console.log(`Message: ${message}, User: ${JSON.stringify(user)}`);
-      toast.success(response.data.message);
-      history("/dashboard");
+      if (status) {
+        toast.success(response.data.message);
+
+        if (rememberMe) {
+          localStorage.setItem("user", JSON.stringify(user));
+        } else {
+          sessionStorage.setItem("user", JSON.stringify(user));
+        }
+        history("/dashboard"); // If the status code is 200, it means the login was successful
+      } else {
+        toast.error(response.data.message);
+      }
     } catch (error) {
       const errorMessage = error.response ? error.response.data : error.message;
       toast.error(
