@@ -35,6 +35,17 @@ function DashboardLayoutBasic() {
   const [darkMode, setDarkMode] = React.useState(false);
   const [anchorEl, setAnchorEl] = React.useState(null);
 
+  const storedUser = localStorage.getItem("user");
+  let parsedUser;
+  if (storedUser) {
+    parsedUser = JSON.parse(storedUser);
+    console.log(parsedUser);
+    // use the parsedUser object
+  } else {
+    parsedUser = "Not yer Recived";
+    // handle the case where the value is not set
+  }
+
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
   };
@@ -136,6 +147,16 @@ function DashboardLayoutBasic() {
               aria-label="profile"
               onClick={handleProfileClick}
             >
+              <p
+                style={{
+                  fontSize: 14,
+                  fontWeight: 400,
+                  margin: 0,
+                  padding: 10,
+                }}
+              >
+                {parsedUser.fullName}
+              </p>
               <Avatar alt="User Profile" src="/path-to-profile-pic.jpg" />
             </IconButton>
             <Menu
@@ -177,8 +198,12 @@ function DashboardLayoutBasic() {
         }}
       >
         <Toolbar />
-        <Typography paragraph>Welcome to the Dashboard!</Typography>
-        <Typography paragraph>Add your main dashboard content here.</Typography>
+        <Typography paragraph>
+          Welcome to the Dashboard! Mr. {parsedUser.full_name}
+        </Typography>
+        <Typography paragraph>
+          Add your main dashboard content here.{parsedUser.email}
+        </Typography>
       </Box>
     </Box>
   );
