@@ -26,6 +26,7 @@ import Brightness7Icon from "@mui/icons-material/Brightness7";
 import MailIcon from "@mui/icons-material/Mail";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import { useThemeToggle } from "./ThemeToggleProvider";
+import { Link, Outlet } from "react-router-dom";
 
 const drawerWidth = 240;
 
@@ -68,20 +69,30 @@ function DashboardLayoutBasic() {
       <Toolbar />
       <Divider />
       <List>
-        {["Dashboard", "Orders", "Reports"].map((text, index) => (
-          <ListItem button key={text}>
-            <ListItemIcon>
-              {index === 0 ? (
-                <DashboardIcon />
-              ) : index === 1 ? (
-                <ShoppingCartIcon />
-              ) : (
-                <BarChartIcon />
-              )}
-            </ListItemIcon>
-            <ListItemText primary={text} />
-          </ListItem>
-        ))}
+        <ListItem button component={Link} to="/dashboard">
+          <ListItemIcon>
+            <DashboardIcon />
+          </ListItemIcon>
+          <ListItemText primary="Dashboard" />
+        </ListItem>
+        <ListItem button component={Link} to="user_update">
+          <ListItemIcon>
+            <ShoppingCartIcon />
+          </ListItemIcon>
+          <ListItemText primary="User Profile Managment" />
+        </ListItem>
+        <ListItem button component={Link} to="report">
+          <ListItemIcon>
+            <BarChartIcon />
+          </ListItemIcon>
+          <ListItemText primary="Reports" />
+        </ListItem>
+        <ListItem button component={Link} to="leagues">
+          <ListItemIcon>
+            <BarChartIcon />
+          </ListItemIcon>
+          <ListItemText primary="Leagues" />
+        </ListItem>
       </List>
     </div>
   );
@@ -180,10 +191,7 @@ function DashboardLayoutBasic() {
           keepMounted: true, // Better open performance on mobile
         }}
         sx={{
-          "& .MuiDrawer-paper": {
-            boxSizing: "border-box",
-            width: drawerWidth,
-          },
+          "& .MuiDrawer-paper": { boxSizing: "border-box", width: drawerWidth },
         }}
       >
         {drawer}
@@ -198,12 +206,7 @@ function DashboardLayoutBasic() {
         }}
       >
         <Toolbar />
-        <Typography paragraph>
-          Welcome to the Dashboard! Mr. {parsedUser.full_name}
-        </Typography>
-        <Typography paragraph>
-          Add your main dashboard content here.{parsedUser.email}
-        </Typography>
+        <Outlet /> {/* This renders the nested route component */}
       </Box>
     </Box>
   );

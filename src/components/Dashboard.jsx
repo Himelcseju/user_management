@@ -1,16 +1,7 @@
-// WelcomeDashboard.js
 import React from "react";
 import { useNavigate } from "react-router-dom"; // Import useHistory hook
 
-function WelcomeDashboard({ username }) {
-  const history = useNavigate();
-
-  const handleLogout = () => {
-    // Perform logout actions here (e.g., clear session, remove authentication token)
-    // After logout, redirect to the login page
-    history("/");
-  };
-
+function Dashboard() {
   return (
     <div className="d-flex justify-content-center align-items-center vh-100">
       <div
@@ -18,20 +9,12 @@ function WelcomeDashboard({ username }) {
         style={{ width: "500px", height: "400px" }}
       >
         <h2 className="mb-4 text-center">Welcome to Dashboard</h2>
-        <p className="mb-4 text-center">Hello, {username}!</p>
+        <p className="mb-4 text-center">Hello,</p>
         <p className="text-center">You are logged in successfully.</p>
-        <div className="text-center">
-          <button
-            type="button"
-            className="btn btn-primary mt-3"
-            onClick={handleLogout}
-          >
-            Logout
-          </button>
-        </div>
+        <div className="text-center"></div>
       </div>
     </div>
   );
 }
 
-export default WelcomeDashboard;
+export default Dashboard;

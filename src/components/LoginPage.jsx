@@ -23,8 +23,8 @@ function LoginPage() {
         password,
       });
 
-      const { message, status, user } = response.data; // Destructure the message and user from the response data
-      console.log(message);
+      const { message, status, user, jwt } = response.data; // Destructure the message and user from the response data
+      console.log("jwt token is " + jwt);
       //console.log("status" + status);
       // console.log(`user is ${JSON.stringify(user)}`);
       //console.log("Login successful:", response.data.message);
@@ -34,8 +34,10 @@ function LoginPage() {
 
         if (rememberMe) {
           localStorage.setItem("user", JSON.stringify(user));
+          localStorage.setItem("jwt", jwt);
         } else {
           sessionStorage.setItem("user", JSON.stringify(user));
+          sessionStorage.setItem("jwt", jwt);
         }
         history("/dashboard"); // If the status code is 200, it means the login was successful
       } else {
